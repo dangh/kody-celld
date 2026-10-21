@@ -101,6 +101,7 @@ export async function smokeSecrets({ mcp, user }) {
   const image = Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAFElEQVR4nGP4TyJgGNUwqmH4agAAr639H708R/EAAAAASUVORK5CYII='), (c) => c.charCodeAt(0))
   const form = new FormData()
   form.append('filename', new Blob([image], { type: 'image/png' }), 'screenshot.png')
+  form.append('note', 'partial marker {{secret: is not a placeholder')
   const request = new Request(url + '/multipart', {
     method: 'POST', headers: { authorization: 'Bearer {{secret:smoke-token}}' }, body: form,
   })

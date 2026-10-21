@@ -224,8 +224,9 @@ export class FetchGateway extends WorkerEntrypoint<Env, RuntimeProps> {
 			const injectedHeaders = new Headers()
 			for (const [name, value] of headers) injectedHeaders.set(name, replaceSecretPlaceholders(value, replacements))
 			let injectedBody: BodyInit | null = bodyBytes
-			if (bodyText !== null && containsSecretPlaceholder(bodyText)) {
-				injectedBody = replaceSecretPlaceholders(bodyText, replacements)
+			const text = bodyText
+			if (text !== null && [...replacements.keys()].some((placeholder) => text.includes(placeholder))) {
+				injectedBody = replaceSecretPlaceholders(text, replacements)
 			}
 			return forward(request, injectedUrl, injectedHeaders, injectedBody)
 		}
